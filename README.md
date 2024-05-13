@@ -1,2 +1,4 @@
 # CyberSpark-CTF-Writeups
-2 writeups from CyberSpark CTF
+This event was presented by Engineering Spark club in IsetCom in 11 May 2024, I had the honor to author 2 challenges in both categories digital forensics and reverse engineering.
+- [CRACKED] : Digital Forensics
+- [just get the flag] : Reverse Engineering
