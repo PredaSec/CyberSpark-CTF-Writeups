@@ -7,21 +7,21 @@ In the challenge we were given a file named "trafficanti.pcap" and the note said
 
 ## Approach
 
-We can start be looking into the capture using Wireshark 
+We can start by looking into the capture using Wireshark 
 
-![alt text](traffic-capture.PNG')
+![alt text](traffic-capture.PNG)
 
-By looking into the packets we would notice `802.11` frames which are a result of a wireless packets capture. 
+First thing to notice is `802.11` frames, which are a result of a wireless packets capture. 
 
-Taking a closer look, we found another protocol existing in the capture which is `eapol`, we can verify by filtering for `eapol` packets :
+Taking a closer look, we found another protocol existing in the capture which is `eapol`, we can verify all it's relating frames by filtering for `eapol` packets :
 
 ![alt text](eapol-capture.PNG)
 
-We can verify now that we have a full 4-way handshake that are the main way to accomplish the authentication conversation. We also noticed the security standard used in this wireless connection :
+We can verify now that we have a full 4-way handshake that are the main way to accomplish the authentication conversation. We also noticed the security standard used in this wireless connection : `WPA`
 
 ![alt text](wpa-capture.PNG)
 
-## Constructing the decryption
+## Decryption
 
 Refering to the note mentioned in the description we know that the WPA key (WIFI password) is in this format : `example: isetcom*1234` 
 
@@ -33,9 +33,9 @@ crunch 12 12 -t isetcom^%%%% -o mywordlist
 
 After extracting our wordlist we may now use another tool to bruteforce the password used for encrypting the traffic, we are going to use the infamous `aircrack-ng`.
 
-Before starting the attack we need the `BSSID` of the victim router. By refering to the workflow of the 4-way handshake we would notice that the Access Point is the first device to start the conversation for authentication : 
+Before starting the attack we need the `BSSID` of the victim router. By refering to the workflow of the 4-way handshake in the following link, we would notice that the Access Point is the first device to start the conversation for authentication : 
 
-[title](https://cdn.networklessons.com/wp-content/uploads/2023/12/wpa-4-way-handshake-workflow.png)
+[WPA 4 way handshake workflow](https://cdn.networklessons.com/wp-content/uploads/2023/12/wpa-4-way-handshake-workflow.png)
 
 so we can look back at the first `eapol` frame to get his `BSSID`:
 
@@ -52,14 +52,14 @@ results of `aircrack-ng` bruteforce :
 
 We found the password! `isetcom-2024`
 
-Now we can use that key to decrypt the traffic and look the filename :
+Now we can use that key to decrypt the traffic and look for the filename :
 `Preferences > Protocols > IEEE 802.11 > Edits`
 
 ![alt text](edit-key.PNG)
 
 We noticed multiple protocols showed up now, after filtering for `HTTP` we noticed a web server frames and a GET request to `/student/` endpoint :
 
-[![N]./http traffic.PNG]
+![alt text](http-traffic.PNG)
 
 Inspecting the frame through `Follow > HTTP stream` we found `74c68f1f36a5814cb30fb0b42f2b5b69.txt` that should be our flag! 
 
