@@ -11,11 +11,11 @@ We starting by analyzing the ELF, and we noticed that it's an ELF 64-bit written
 
 ![alt text](file-analysis.PNG)
 
-We will go straight to decompiling, I personaly prefer `IDA` for the matter. First thing to take a note for is these functions that appeared: 
+We will go straight to decompiling, I personaly prefer `IDA` for the matter. First thing to take a note of is these functions that appeared: 
 
 ![alt text](functions.PNG)
 
-Checking `main_main` which is our main function, we can ultimatly understand that it is a web server listening and handling requests and we got `:8090` which may appear to be a port, so we can make note of it :
+Checking `main_main` which is our main function, we can ultimately understand that it is a web server listening and handling requests and we got `:8090` which may appear to be a port, so we can make note of it :
 
 ![alt text](main-function.PNG)
 
@@ -39,7 +39,7 @@ the binary is actually reponding to our requests, but `printflag` is returning `
 
 ![alt text](curls.PNG)
 
-Getting back to `main_main` in `IDA View` we noticed characters stored in `rsp+0xC8` then concatinated to sent to `http.handleFunc` that means this is the third endpoit we are looking for! which is `hetlflag` that should be the one to print back the flag. 
+Getting back to `main_main` in `IDA View` we noticed characters stored in `rsp+0xC8` then concatinated to sent to `http.handleFunc` that means this is the third endpoint we are looking for! which is `hetlflag` that should be the one to print back the flag. 
 
 ![alt text](flag-endpoint.PNG)
 
@@ -51,6 +51,6 @@ so to get the flag we should sent a get request using `curl` for example :
 curl http://4.232.65.83:8090/hetlflag
 ```
 
-> flag : park{64e9310f03c092c01134ea409c68bfa323ae5f43}
+> flag : Spark{64e9310f03c092c01134ea409c68bfa323ae5f43} 
 
 
