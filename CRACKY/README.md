@@ -66,3 +66,5 @@ Inspecting the frame through `Follow > HTTP stream` we found `74c68f1f36a5814cb3
 ![alt text](student-content.PNG)
 
 `Spark{74c68f1f36a5814cb30fb0b42f2b5b69}`
+
+> Note: `aircrack-ng` might not detect the `eapol` frames to crack it. For that we can use [cap2hashcat](https://hashcat.net/cap2hashcat/) to extract the hash and crack it in `22000` mode.
